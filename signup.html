@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Coscharis</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS Variables */
+    :root {
+      --primary-color: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary-color: #f59e0b;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --warning-color: #f59e0b;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      --radius: 0.5rem;
+      --radius-xl: 1rem;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--gray-800);
+    }
+
+    /* Auth Page Layout */
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      padding: 2rem;
+    }
+
+    .auth-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 1100px;
+      width: 100%;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+    }
+
+    /* Left Side - Image */
+    .auth-image {
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 3rem;
+      color: white;
+    }
+
+    .auth-image h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .auth-image p {
+      font-size: 1.125rem;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    .auth-image .features {
+      margin-top: 2rem;
+    }
+
+    .auth-image .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+      font-size: 0.9375rem;
+    }
+
+    .auth-image .feature i {
+      width: 32px;
+      height: 32px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+
+    /* Right Side - Form */
+    .auth-form-wrapper {
+      padding: 3rem;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-logo i {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-logo h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 0.25rem;
+    }
+
+    .auth-logo p {
+      color: var(--gray-500);
+      font-size: 0.875rem;
+    }
+
+    /* Form Elements */
+    .signup-form .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.375rem;
+      font-weight: 500;
+      color: var(--gray-700);
+      font-size: 0.875rem;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      transition: var(--transition);
+      font-family: inherit;
+      background: white;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--gray-400);
+    }
+
+    /* Input with Icon */
+    .input-icon-wrapper {
+      position: relative;
+    }
+
+    .input-icon-wrapper i {
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      font-size: 0.875rem;
+    }
+
+    .input-icon-wrapper .form-input {
+      padding-left: 2.25rem;
+    }
+
+    /* Terms Checkbox */
+    .terms-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+      color: var(--gray-600);
+      cursor: pointer;
+    }
+
+    .terms-checkbox input[type="checkbox"] {
+      margin-top: 0.25rem;
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--primary-color);
+      flex-shrink: 0;
+    }
+
+    .terms-checkbox a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .terms-checkbox a:hover {
+      text-decoration: underline;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.5rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 0.875rem;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-lg {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+    }
+
+    .auth-submit {
+      width: 100%;
+      padding: 0.875rem;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Divider */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1.5rem 0;
+      color: var(--gray-500);
+      font-size: 0.875rem;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gray-200);
+    }
+
+    /* Social Login */
+    .social-login {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius);
+      background: white;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: var(--gray-700);
+      text-decoration: none;
+    }
+
+    .social-btn:hover {
+      border-color: var(--primary-color);
+      background: rgba(37, 99, 235, 0.05);
+      color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .social-btn i {
+      font-size: 1.125rem;
+    }
+
+    /* Auth Footer */
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--gray-600);
+      font-size: 0.875rem;
+    }
+
+    .auth-footer p {
+      margin-bottom: 0.5rem;
+    }
+
+    .auth-footer a {
+      color: var(--primary-color);
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Success Modal - Using CSS Target */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 2000;
+      padding: 1rem;
+    }
+
+    .modal-overlay:target {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: white;
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 450px;
+      box-shadow: var(--shadow-xl);
+      transform: scale(0.9);
+      transition: var(--transition);
+      text-align: center;
+      padding: 2.5rem;
+    }
+
+    .modal-overlay:target .modal {
+      transform: scale(1);
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--success-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .success-icon i {
+      font-size: 2.5rem;
+      color: white;
+    }
+
+    .modal h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      color: var(--gray-900);
+    }
+
+    .modal > p {
+      color: var(--gray-600);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .modal-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+    }
+
+    /* Responsive */
+    @media (max-width: 968px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+      }
+
+      .auth-image {
+        display: none;
+      }
+
+      .auth-form-wrapper {
+        padding: 2rem;
+        max-height: none;
+      }
+
+      .signup-form .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .auth-page {
+        padding: 1rem;
+      }
+
+      .social-login {
+        flex-direction: column;
+      }
+    }
+
+    /* Utility Classes */
+    .text-center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-container">
+      <!-- Left Side - Image -->
+      <div class="auth-image">
+        <h2>Join Coscharis Today!</h2>
+        <p>Create an account to start bidding on premium vehicles and track your purchases.</p>
+        
+        <div class="features">
+          <div class="feature">
+            <i class="fas fa-check"></i>
+            <span>Access exclusive auctions</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-check"></i>
+            <span>Track your bids in real-time</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-check"></i>
+            <span>Save favorite vehicles</span>
+          </div>
+          <div class="feature">
+            <i class="fas fa-check"></i>
+            <span>Secure wallet payments</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Side - Form -->
+      <div class="auth-form-wrapper">
+        <div class="auth-logo">
+          <img src="./img/logo.jpg" width="200px" height="200px" alt="">
+          <h1>Create Account</h1>
+          <p>Fill in your details to get started</p>
+        </div>
+        
+        <form action="#successModal" class="signup-form" method="GET">
+          <!-- Name Row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="firstName">First Name *</label>
+              <div class="input-icon-wrapper">
+                <i class="fas fa-user"></i>
+                <input type="text" id="firstName" name="firstName" class="form-input" placeholder="John" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="lastName">Last Name *</label>
+              <div class="input-icon-wrapper">
+                <i class="fas fa-user"></i>
+                <input type="text" id="lastName" name="lastName" class="form-input" placeholder="Doe" required>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Contact Row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address *</label>
+              <div class="input-icon-wrapper">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" name="email" class="form-input" placeholder="john@example.com" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="phone">Phone Number *</label>
+              <div class="input-icon-wrapper">
+                <i class="fas fa-phone"></i>
+                <input type="tel" id="phone" name="phone" class="form-input" placeholder="+1 (555) 123-4567" required>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Address -->
+          <div class="form-group">
+            <label class="form-label" for="address">Street Address *</label>
+            <div class="input-icon-wrapper">
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" id="address" name="address" class="form-input" placeholder="123 Main Street" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="city">City *</label>
+              <input type="text" id="city" name="city" class="form-input" placeholder="New York" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="state">State/Province *</label>
+              <input type="text" id="state" name="state" class="form-input" placeholder="NY" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="zipCode">ZIP Code *</label>
+              <input type="text" id="zipCode" name="zipCode" class="form-input" placeholder="10001" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="country">Country *</label>
+              <select id="country" name="country" class="form-select" required>
+                <option value="">Select Country</option>
+                <option value="US" selected>United States</option>
+                <option value="CA">Canada</option>
+                <option value="UK">United Kingdom</option>
+                <option value="AU">Australia</option>
+                <option value="DE">Germany</option>
+                <option value="FR">France</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Password -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="password">Password *</label>
+              <div class="input-icon-wrapper">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Create password" required minlength="8">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="confirmPassword">Confirm Password *</label>
+              <div class="input-icon-wrapper">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="Confirm password" required>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Terms -->
+          <label class="terms-checkbox">
+            <input type="checkbox" name="agreeTerms" required>
+            <span>I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I confirm that I am at least 18 years old. *</span>
+          </label>
+          
+          <label class="terms-checkbox">
+            <input type="checkbox" name="newsletter">
+            <span>Send me newsletters, promotions, and updates about new vehicles and special offers.</span>
+          </label>
+          
+          <!-- Submit -->
+          <button type="submit" class="btn btn-primary auth-submit">
+            <i class="fas fa-user-plus"></i> Create Account
+          </button>
+        </form>
+        
+        <div class="auth-divider">or sign up with</div>
+        
+        <div class="social-login">
+          <a href="#" class="social-btn" title="Sign up with Google">
+            <i class="fab fa-google" style="color: #DB4437;"></i> Google
+          </a>
+          <a href="#" class="social-btn" title="Sign up with Facebook">
+            <i class="fab fa-facebook" style="color: #4267B2;"></i> Facebook
+          </a>
+        </div>
+        
+        <div class="auth-footer">
+          <p>Already have an account? <a href="login.html">Sign in</a></p>
+          <p><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal - Using CSS Target -->
+  <div id="successModal" class="modal-overlay">
+    <a href="#" class="modal-backdrop"></a>
+    <div class="modal">
+      <div class="success-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h2>Account Created!</h2>
+      <p>Welcome to Coscharis! Your account has been successfully created.</p>
+      <a href="login.html" class="btn btn-primary btn-lg">Sign In Now</a>
+    </div>
+  </div>
+</body>
+</html>

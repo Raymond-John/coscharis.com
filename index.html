@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coscharis - Buy & Bid on Premium Cars</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS Variables */
+    :root {
+      --primary-color: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary-color: #f59e0b;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --radius: 0.5rem;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background-color: var(--gray-50);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Navigation */
+    .navbar {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .navbar-nav {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      color: var(--gray-600);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--primary-color);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary-color);
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cart-icon {
+      position: relative;
+      color: var(--gray-600);
+      font-size: 1.25rem;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .cart-icon:hover {
+      color: var(--primary-color);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--danger-color);
+      color: white;
+      font-size: 0.75rem;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 0.875rem;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: #ed2d33;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #ed2d33;
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: black;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #353a94;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--gray-300);
+      color: var(--gray-700);
+    }
+
+    .btn-outline:hover {
+      border-color: #353a94;
+      color: var(--primary-color);
+    }
+
+    .btn-sm {
+      padding: 0.375rem 0.875rem;
+      font-size: 0.875rem;
+    }
+
+    .btn-lg {
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: #353a94;
+      color: white;
+      padding: 5rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      background-size: cover;
+      background-position: bottom;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .hero-stat-label {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+
+    /* Sections */
+    .section {
+      padding: 5rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      color: var(--gray-600);
+      font-size: 1.125rem;
+    }
+
+    /* Car Grid */
+    .car-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .car-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .car-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .car-image {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+    }
+
+    .car-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .car-card:hover .car-image img {
+      transform: scale(1.05);
+    }
+
+    .car-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.375rem 0.875rem;
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-auction {
+      background: red;
+      color: white;
+    }
+
+    .badge-sale {
+      background: blue;
+      color: white;
+    }
+
+    .car-favorite {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .car-favorite:hover {
+      color: var(--danger-color);
+      transform: scale(1.1);
+    }
+
+    .car-content {
+      padding: 1.5rem;
+    }
+
+    .car-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--gray-900);
+    }
+
+    .car-meta {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+
+    .car-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .car-price {
+      margin-bottom: 1rem;
+    }
+
+    .car-price-label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .car-price-current {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .car-price-original {
+      font-size: 1rem;
+      color: var(--gray-400);
+      text-decoration: line-through;
+      margin-left: 0.5rem;
+    }
+
+    .car-time {
+      color: red;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .car-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .car-actions .btn {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* Grid System */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .grid-cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: 1024px) {
+      .grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .grid-cols-4 {
+        grid-template-columns: 1fr;
+      }
+      
+      .car-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .navbar-nav {
+        display: none;
+      }
+    }
+
+    /* Category Cards */
+    .category-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      border: 2px solid transparent;
+    }
+
+    .category-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary-color);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .category-card i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .category-card h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+    }
+
+    .category-card p {
+      color: var(--gray-500);
+      font-size: 0.875rem;
+    }
+
+    /* How It Works */
+    .step-card {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .step-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+    }
+
+    .step-icon.primary {
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary-color);
+    }
+
+    .step-icon.secondary {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--secondary-color);
+    }
+
+    .step-icon.success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success-color);
+    }
+
+    .step-icon.danger {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger-color);
+    }
+
+    .step-card h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+    }
+
+    .step-card p {
+      color: var(--gray-600);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: #353a94;
+      color: white;
+      padding: 5rem 0;
+    }
+
+    .cta-content {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .cta-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .cta-content p {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Footer */
+    .footer {
+      background: white;
+      color: var(--gray-300);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand h3 {
+      color: black;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-brand p {
+      line-height: 1.8;
+      color: black;
+    }
+
+    .footer-links h4 {
+      color:black;
+      font-size: 1.125rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: blue;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--gray-800);
+      padding-top: 2rem;
+      text-align: center;
+      color: var(--gray-500);
+    }
+
+    @media (max-width: 768px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    /* Utilities */
+    .text-center {
+      text-align: center;
+    }
+
+    .text-primary { color: var(--primary-color); }
+    .text-secondary { color: var(--secondary-color); }
+    .text-success { color: var(--success-color); }
+    .text-danger { color: var(--danger-color); }
+
+    /* Mobile Menu Toggle - CSS Only */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--gray-600);
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .auth-section {
+        display: none !important;
+      }
+    }
+
+    /* Smooth Scroll */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Selection Color */
+    ::selection {
+      background: var(--primary-color);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="navbar-brand">
+       <img src="./img/logoname.png" alt="" width="200px">
+      </a>
+      
+      <ul class="navbar-nav">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="cars.html" class="nav-link">Buy Cars</a></li>
+        <li><a href="luxury-rides.html" class="nav-link">Luxury Rides</a></li>
+        <li><a href="aution.html" class="nav-link">Auctions</a></li>
+      </ul>
+      
+      <div class="navbar-actions">
+        <a href="checkout.html" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">3</span>
+        </a>
+        <div class="auth-section" style="display: flex; gap: 0.5rem; align-items: center;">
+          <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+          <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <button class="mobile-menu-btn" onclick="alert('Mobile menu would open here - requires JavaScript for full functionality')">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Premium Vehicles. Trusted Excellence.</h1>
+        <p class="hero-subtitle">Explore our range of world-class vehicles and request a quote instantly—designed for convenience, speed, and confidence.</p>
+        <div class="hero-buttons">
+          <a href="cars.html" class="btn btn-secondary btn-lg">
+            <i class="fas fa-search"></i> Browse Cars
+          </a>
+          <a href="cars.html?type=auction" class="btn btn-outline btn-lg" style="border-color: white; color: white;">
+            <i class="fas fa-gavel"></i> View Auctions
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-number">5,000+</div>
+            <div class="hero-stat-label">Cars Available</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-number">$2M+</div>
+            <div class="hero-stat-label">In Auctions</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-number">10K+</div>
+            <div class="hero-stat-label">Happy Customers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Cars Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Featured Vehicles</h2>
+        <p class="section-subtitle">Handpicked premium cars available for immediate purchase or bidding</p>
+      </div>
+      
+      <div class="car-grid">
+        <!-- Car 1: Auction -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&auto=format&fit=crop" alt="Mercedes-Benz S-Class">
+            <span class="car-badge badge-auction">Auction</span>
+            <button class="car-favorite" title="Add to favorites">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2023 Mercedes-Benz S-Class</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2023</span>
+              <span><i class="fas fa-tachometer-alt"></i> 12,500 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Hybrid</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$85,000</span>
+            </div>
+            <div class="car-time">
+              <i class="fas fa-clock"></i> 2 days 4 hours remaining
+            </div>
+            <div class="car-actions">
+              <a href="autiondetail.html" class="btn btn-primary btn-sm">View Details</a>
+              <a href="autiondetail.html" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Car 2: For Sale -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=800&auto=format&fit=crop" alt="BMW M4 Competition">
+            <span class="car-badge badge-sale">For Sale</span>
+            <button class="car-favorite" title="Add to favorites">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2022 BMW M4 Competition</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2022</span>
+              <span><i class="fas fa-tachometer-alt"></i> 8,200 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-current">$72,500</span>
+              <span class="car-price-original">$78,900</span>
+            </div>
+            <div class="car-actions">
+              <a href="./Cardetails/BMW/cardetails.html" class="btn btn-primary btn-sm">View Details</a>
+              <a href="checkout.html" class="btn btn-success btn-sm">Add to Cart</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Car 3: Auction -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1544636331-e26879cdcf6e?w=800&auto=format&fit=crop" alt="Porsche 911">
+            <span class="car-badge badge-auction">Auction</span>
+            <button class="car-favorite" title="Add to favorites">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2021 Porsche 911 Carrera</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2021</span>
+              <span><i class="fas fa-tachometer-alt"></i> 15,300 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$98,500</span>
+            </div>
+            <div class="car-time">
+              <i class="fas fa-clock"></i> 5 hours 32 minutes remaining
+            </div>
+            <div class="car-actions">
+              <a href="car-details.html?id=3" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=3&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Car 4: For Sale -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&auto=format&fit=crop" alt="Audi e-tron GT">
+            <span class="car-badge badge-sale">For Sale</span>
+            <button class="car-favorite" title="Add to favorites">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2023 Audi e-tron GT</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2023</span>
+              <span><i class="fas fa-tachometer-alt"></i> 3,100 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Electric</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-current">$95,000</span>
+            </div>
+            <div class="car-actions">
+              <a href="./Cardetails/Audi/cardetails.html" class="btn btn-primary btn-sm">View Details</a>
+              <a href="checkout.html" class="btn btn-success btn-sm">Add to Cart</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Car 5: Auction -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=800&auto=format&fit=crop" alt="Lamborghini Huracan">
+            <span class="car-badge badge-auction">Auction</span>
+            <button class="car-favorite" title="Add to favorites">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2020 Lamborghini Huracan EVO</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2020</span>
+              <span><i class="fas fa-tachometer-alt"></i> 6,800 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$215,000</span>
+            </div>
+            <div class="car-time">
+              <i class="fas fa-clock"></i> 1 day 12 hours remaining
+            </div>
+            <div class="car-actions">
+              <a href="car-details.html?id=5" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=5&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Car 6: For Sale -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&auto=format&fit=crop" alt="Tesla Model S">
+            <span class="car-badge badge-sale">For Sale</span>
+            <button class="car-favorite" title="Add to favorites">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2023 Tesla Model S Plaid</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2023</span>
+              <span><i class="fas fa-tachometer-alt"></i> 2,400 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Electric</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-current">$89,900</span>
+              <span class="car-price-original">$96,000</span>
+            </div>
+            <div class="car-actions">
+              <a href="./Cardetails/Telsa/cardetails.html" class="btn btn-primary btn-sm">View Details</a>
+              <a href="checkout.html?add=6" class="btn btn-success btn-sm">Add to Cart</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center" style="margin-top: 3rem;">
+        <a href="cars.html" class="btn btn-primary btn-lg">
+          View All Cars <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section" style="background-color: var(--white);">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Simple steps to get your dream car</p>
+      </div>
+      
+      <div class="grid grid-cols-4" style="gap: 2rem;">
+        <div class="step-card">
+          <div class="step-icon primary">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3>1. Browse</h3>
+          <p>Search through our extensive collection of premium vehicles</p>
+        </div>
+        
+        <div class="step-card">
+          <div class="step-icon secondary">
+            <i class="fas fa-gavel"></i>
+          </div>
+          <h3>2. Bid or Buy</h3>
+          <p>Place bids on auctions or buy instantly at fixed prices</p>
+        </div>
+        
+        <div class="step-card">
+          <div class="step-icon success">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <h3>3. Deposit</h3>
+          <p>Add funds to your wallet for quick and secure payments</p>
+        </div>
+        
+        <div class="step-card">
+          <div class="step-icon danger">
+            <i class="fas fa-car"></i>
+          </div>
+          <h3>4. Drive Away</h3>
+          <p>Complete the purchase and receive your dream car</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Browse by Category</h2>
+        <p class="section-subtitle">Find the perfect car for your lifestyle</p>
+      </div>
+      
+      <div class="grid grid-cols-4" style="gap: 1.5rem;">
+        <a href="cars.html?brand=BMW" class="category-card">
+          <i class="fas fa-car-side text-primary"></i>
+          <h3>Luxury Sedans</h3>
+          <p>Premium comfort and style</p>
+        </a>
+        
+        <a href="cars.html?brand=Lamborghini" class="category-card">
+          <i class="fas fa-tachometer-alt text-danger"></i>
+          <h3>Sports Cars</h3>
+          <p>Ultimate performance machines</p>
+        </a>
+        
+        <a href="cars.html?fuel=Electric" class="category-card">
+          <i class="fas fa-bolt text-success"></i>
+          <h3>Electric</h3>
+          <p>Future of driving</p>
+        </a>
+        
+        <a href="cars.html?type=auction" class="category-card">
+          <i class="fas fa-gavel text-secondary"></i>
+          <h3>Auctions</h3>
+          <p>Bid and win exclusive cars</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Find Your Perfect Car?</h2>
+        <p>Join thousands of satisfied customers who found their dream vehicles through Coscharis.</p>
+        <div class="cta-buttons">
+          <a href="cars.html" class="btn btn-secondary btn-lg">Start Browsing</a>
+          <a href="customer-dashboard.html" class="btn btn-outline btn-lg" style="border-color: white; color: white;">Create Account</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3><img src="./img/logoname.png" width="350px" alt=""></h3>
+          <p>Your trusted destination for premium vehicles. Buy, bid, and drive away in your dream car today.</p>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="cars.html">Buy Cars</a></li>
+            <li><a href="cars.html?type=auction">Auctions</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>Contact</h4>
+          <ul>
+            <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+            <li><i class="fas fa-envelope"></i> info@Coscharis.com</li>
+            <li><i class="fas fa-map-marker-alt"></i> 123 Auto Drive, NY 10001</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2024 Coscharis. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

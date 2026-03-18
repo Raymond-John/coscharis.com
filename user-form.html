@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile - Coscharis</title>
+  <link rel="stylesheet" href="Css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="navbar-brand">
+        <i class="fas fa-car"></i>
+        <span>Coscharis</span>
+      </a>
+      
+      <ul class="navbar-nav">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="cars.html" class="nav-link">Buy Cars</a></li>
+        <li><a href="luxury-rides.html" class="nav-link">Luxury Rides</a></li>
+        <li><a href="cars.html?type=auction" class="nav-link">Auctions</a></li>
+      </ul>
+      
+      <div class="navbar-actions">
+        <a href="checkout.html" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" style="display: none;">0</span>
+        </a>
+        <div class="auth-section" style="display: flex; gap: 0.5rem; align-items: center;">
+          <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+          <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Form Section -->
+  <section class="section">
+    <div class="container">
+      <div style="max-width: 900px; margin: 0 auto;">
+        <!-- Breadcrumb -->
+        <div style="margin-bottom: 1.5rem;">
+          <a href="index.html" style="color: var(--gray-500);">Home</a>
+          <span style="color: var(--gray-400); margin: 0 0.5rem;">/</span>
+          <a href="customer-dashboard.html" style="color: var(--gray-500);">My Account</a>
+          <span style="color: var(--gray-400); margin: 0 0.5rem;">/</span>
+          <span>Edit Profile</span>
+        </div>
+
+        <div class="form-container">
+          <div class="form-header">
+            <div style="width: 80px; height: 80px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+              <i class="fas fa-user" style="font-size: 2rem; color: white;"></i>
+            </div>
+            <h1>Edit Your Profile</h1>
+            <p>Update your personal information and address details</p>
+          </div>
+
+          <form id="profileForm">
+            <!-- Personal Information -->
+            <div class="form-section">
+              <h3 class="form-section-title"><i class="fas fa-user-circle"></i> Personal Information</h3>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">First Name *</label>
+                  <input type="text" id="firstName" class="form-input" required placeholder="Enter your first name">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Last Name *</label>
+                  <input type="text" id="lastName" class="form-input" required placeholder="Enter your last name">
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Email Address *</label>
+                  <input type="email" id="email" class="form-input" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone Number *</label>
+                  <input type="tel" id="phone" class="form-input" required placeholder="+1 (555) 123-4567">
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Date of Birth</label>
+                  <input type="date" id="dob" class="form-input">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Gender</label>
+                  <select id="gender" class="form-select">
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                    <option value="prefer-not">Prefer not to say</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="form-section">
+              <h3 class="form-section-title"><i class="fas fa-map-marker-alt"></i> Address Information</h3>
+              
+              <div class="form-group">
+                <label class="form-label">Street Address *</label>
+                <input type="text" id="address" class="form-input" required placeholder="123 Main Street, Apt 4B">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Apartment, Suite, etc. (Optional)</label>
+                <input type="text" id="address2" class="form-input" placeholder="Apartment, suite, unit, building, floor, etc.">
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">City *</label>
+                  <input type="text" id="city" class="form-input" required placeholder="New York">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">State/Province *</label>
+                  <input type="text" id="state" class="form-input" required placeholder="NY">
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">ZIP/Postal Code *</label>
+                  <input type="text" id="zipCode" class="form-input" required placeholder="10001">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Country *</label>
+                  <select id="country" class="form-select" required>
+                    <option value="">Select Country</option>
+                    <option value="US" selected>United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="IT">Italy</option>
+                    <option value="ES">Spain</option>
+                    <option value="JP">Japan</option>
+                    <option value="CN">China</option>
+                    <option value="IN">India</option>
+                    <option value="BR">Brazil</option>
+                    <option value="MX">Mexico</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Information -->
+            <div class="form-section">
+              <h3 class="form-section-title"><i class="fas fa-info-circle"></i> Additional Information</h3>
+              
+              <div class="form-group">
+                <label class="form-label">Driver's License Number</label>
+                <input type="text" id="license" class="form-input" placeholder="Enter your driver's license number">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Preferred Contact Method</label>
+                <div style="display: flex; gap: 1.5rem; margin-top: 0.5rem;">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="contactMethod" value="email" checked>
+                    <span>Email</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="contactMethod" value="phone">
+                    <span>Phone</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    <input type="radio" name="contactMethod" value="both">
+                    <span>Both</span>
+                  </label>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Notes (Optional)</label>
+                <textarea id="notes" class="form-textarea" rows="3" placeholder="Any additional information you'd like us to know..."></textarea>
+              </div>
+            </div>
+
+            <!-- Terms and Submit -->
+            <div class="form-section">
+              <div class="form-group">
+                <label style="display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer;">
+                  <input type="checkbox" id="terms" required style="margin-top: 0.25rem;">
+                  <span style="font-size: 0.875rem;">I confirm that all the information provided is accurate and complete. I agree to the <a href="#" style="color: var(--primary-color);">Terms of Service</a> and <a href="#" style="color: var(--primary-color);">Privacy Policy</a>. *</span>
+                </label>
+              </div>
+              
+              <div class="form-group">
+                <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                  <input type="checkbox" id="newsletter">
+                  <span style="font-size: 0.875rem;">I would like to receive newsletters, promotional emails, and updates about new cars and special offers.</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Buttons -->
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+              <a href="customer-dashboard.html" class="btn btn-outline btn-lg">Cancel</a>
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-save"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3><i class="fas fa-car"></i> Coscharis</h3>
+          <p>Your trusted destination for premium vehicles.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="cars.html">Buy Cars</a></li>
+            <li><a href="cars.html?type=auction">Auctions</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Coscharis. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="successModal">
+    <div class="modal" style="text-align: center; padding: 2rem;">
+      <div style="width: 80px; height: 80px; background: var(--success-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+        <i class="fas fa-check" style="font-size: 2.5rem; color: white;"></i>
+      </div>
+      <h2 style="margin-bottom: 1rem;">Profile Updated!</h2>
+      <p style="color: var(--gray-600); margin-bottom: 1.5rem;">Your profile information has been successfully saved.</p>
+      <button class="btn btn-primary btn-lg" onclick="goToDashboard()">Go to Dashboard</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUserData();
+      
+      // Form submission
+      document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        saveProfile();
+      });
+    });
+    
+    function loadUserData() {
+      const user = User.getCurrent();
+      
+      if (user) {
+        // Split name into first and last
+        const nameParts = (user.name || '').split(' ');
+        document.getElementById('firstName').value = nameParts[0] || '';
+        document.getElementById('lastName').value = nameParts.slice(1).join(' ') || '';
+        
+        document.getElementById('email').value = user.email || '';
+        document.getElementById('phone').value = user.phone || '';
+        
+        if (user.address) {
+          document.getElementById('address').value = user.address.street || '';
+          document.getElementById('city').value = user.address.city || '';
+          document.getElementById('state').value = user.address.state || '';
+          document.getElementById('zipCode').value = user.address.zipCode || '';
+          document.getElementById('country').value = user.address.country || 'US';
+        }
+        
+        if (user.dob) document.getElementById('dob').value = user.dob;
+        if (user.gender) document.getElementById('gender').value = user.gender;
+        if (user.license) document.getElementById('license').value = user.license;
+        if (user.notes) document.getElementById('notes').value = user.notes;
+      }
+    }
+    
+    function saveProfile() {
+      const userData = {
+        name: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        dob: document.getElementById('dob').value,
+        gender: document.getElementById('gender').value,
+        address: {
+          street: document.getElementById('address').value,
+          address2: document.getElementById('address2').value,
+          city: document.getElementById('city').value,
+          state: document.getElementById('state').value,
+          zipCode: document.getElementById('zipCode').value,
+          country: document.getElementById('country').value
+        },
+        license: document.getElementById('license').value,
+        contactMethod: document.querySelector('input[name="contactMethod"]:checked').value,
+        notes: document.getElementById('notes').value,
+        newsletter: document.getElementById('newsletter').checked,
+        joined: User.getCurrent()?.joined || new Date().toISOString()
+      };
+      
+      // Save to storage
+      User.saveDetails(userData);
+      
+      // Show success modal
+      openModal('successModal');
+    }
+    
+    function goToDashboard() {
+      window.location.href = 'customer-dashboard.html';
+    }
+  </script>
+</body>
+</html>

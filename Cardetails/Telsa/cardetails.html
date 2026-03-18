@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2022 BMW M4 Competition - Coscharis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Similar Section Header */
+        .similar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .similar-header .section-title {
+            margin-bottom: 0;
+        }
+
+        /* Carousel Container */
+        .carousel-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 1rem;
+        }
+
+        .carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            width: max-content;
+        }
+
+        /* Carousel Slide */
+        .carousel-slide {
+            width: 350px;
+            flex-shrink: 0;
+        }
+
+        /* Similar Card Enhanced */
+        .similar-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .similar-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--success-color);
+        }
+
+        .similar-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--success-color);
+            color: white;
+            padding: 0.375rem 0.875rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 10;
+        }
+
+        .similar-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .similar-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .similar-card:hover .similar-image img {
+            transform: scale(1.08);
+        }
+
+        .similar-content {
+            padding: 1.5rem;
+        }
+
+        .similar-title {
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            color: var(--gray-900);
+            line-height: 1.4;
+        }
+
+        .similar-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .similar-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .similar-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .similar-price {
+            color: var(--success-color);
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+
+        .similar-original {
+            color: var(--gray-400);
+            text-decoration: line-through;
+            font-size: 1rem;
+        }
+
+        .similar-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .similar-actions .btn {
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .similar-actions .btn-success {
+            flex: 0 0 50px;
+            padding: 0.75rem 0;
+        }
+
+        /* Carousel Navigation Dots */
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .carousel-dot:hover,
+        .carousel-dot.active {
+            background: var(--primary-color);
+            transform: scale(1.2);
+        }
+
+        /* Scroll Snap for Better UX */
+        .carousel-container {
+            scroll-snap-type: x mandatory;
+        }
+
+        .carousel-slide {
+            scroll-snap-align: start;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .carousel-slide {
+                width: 320px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .carousel-slide {
+                width: 300px;
+            }
+
+            .similar-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .similar-actions {
+                flex-direction: row;
+            }
+
+            .similar-actions .btn-success {
+                flex: 0 0 44px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carousel-slide {
+                width: 280px;
+            }
+        }
+
+        /* Carousel Wrapper */
+        .carousel-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Carousel Container */
+        .carousel-container {
+            flex: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 1rem 0;
+        }
+
+        .carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Carousel Arrows */
+        .carousel-arrow {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            color: var(--gray-600);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: var(--shadow);
+            z-index: 10;
+        }
+
+        .carousel-arrow:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .carousel-arrow:active {
+            transform: scale(0.95);
+        }
+
+        /* Carousel Track */
+        .carousel-track {
+            display: flex;
+            gap: 1.5rem;
+            width: max-content;
+        }
+
+        /* Carousel Slide */
+        .carousel-slide {
+            width: 350px;
+            flex-shrink: 0;
+        }
+
+        /* Similar Card Enhanced */
+        .similar-card {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .similar-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--success-color);
+        }
+
+        .similar-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--success-color);
+            color: white;
+            padding: 0.375rem 0.875rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 10;
+        }
+
+        .similar-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .similar-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .similar-card:hover .similar-image img {
+            transform: scale(1.08);
+        }
+
+        .similar-content {
+            padding: 1.5rem;
+        }
+
+        .similar-title {
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            color: var(--gray-900);
+            line-height: 1.4;
+        }
+
+        .similar-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .similar-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .similar-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .similar-price {
+            color: var(--success-color);
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+
+        .similar-original {
+            color: var(--gray-400);
+            text-decoration: line-through;
+            font-size: 1rem;
+        }
+
+        .similar-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .similar-actions .btn {
+            flex: 1;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .similar-actions .btn-success {
+            flex: 0 0 50px;
+            padding: 0.75rem 0;
+        }
+
+        /* Carousel Navigation Dots */
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            transition: var(--transition);
+            display: block;
+        }
+
+        .carousel-dot.active {
+            background: var(--primary-color);
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .carousel-slide {
+                width: 320px;
+            }
+
+            .carousel-arrow {
+                width: 44px;
+                height: 44px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .carousel-wrapper {
+                gap: 0.5rem;
+            }
+
+            .carousel-arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 0.875rem;
+            }
+
+            .carousel-slide {
+                width: 300px;
+            }
+
+            .similar-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carousel-arrow {
+                display: none;
+                /* Hide arrows on very small screens, rely on swipe */
+            }
+
+            .carousel-slide {
+                width: 280px;
+            }
+        }
+
+        /* CSS Variables */
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #f59e0b;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius: 0.5rem;
+            --radius-xl: 1rem;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background-color: var(--gray-50);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .cart-icon {
+            position: relative;
+            color: var(--gray-600);
+            font-size: 1.25rem;
+            text-decoration: none;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--danger-color);
+            color: white;
+            font-size: 0.75rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 0.875rem;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 1.5rem 0;
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .breadcrumb-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .breadcrumb a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Car Detail Layout */
+        .car-detail {
+            padding: 2rem 0;
+        }
+
+        .car-detail-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 3rem;
+        }
+
+        /* Image Gallery */
+        .gallery {
+            position: sticky;
+            top: 90px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 500px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background: var(--gray-100);
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .thumbnail {
+            height: 100px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            border-color: var(--primary-color);
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Car Info Sidebar */
+        .car-info {
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .car-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .car-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--success-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .car-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .car-subtitle {
+            color: var(--gray-600);
+            font-size: 1.125rem;
+        }
+
+        /* Pricing Box */
+        .pricing-box {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 2px solid var(--success-color);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .current-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--success-color);
+        }
+
+        .original-price {
+            font-size: 1.5rem;
+            color: var(--gray-400);
+            text-decoration: line-through;
+        }
+
+        .savings {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--success-color);
+            color: white;
+            padding: 0.375rem 0.875rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .price-note {
+            color: var(--gray-600);
+            font-size: 0.875rem;
+            margin-top: 0.75rem;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-buttons .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.125rem;
+        }
+
+        .secure-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .secure-note i {
+            color: var(--success-color);
+        }
+
+        /* Dealer Info */
+        .dealer-info {
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dealer-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .dealer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .dealer-name {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .dealer-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--secondary-color);
+            font-size: 0.875rem;
+        }
+
+        .dealer-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .dealer-actions .btn {
+            flex: 1;
+        }
+
+        /* Specs Grid */
+        .specs-section {
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--gray-900);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+        }
+
+        .spec-icon {
+            width: 48px;
+            height: 48px;
+            background: white;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .spec-content {
+            flex: 1;
+        }
+
+        .spec-label {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 0.25rem;
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        /* Description */
+        .description-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--gray-100);
+        }
+
+        .description-text {
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+
+        .description-text p {
+            margin-bottom: 1rem;
+        }
+
+        /* Features List */
+        .features-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--gray-100);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray-700);
+        }
+
+        .feature-item i {
+            color: var(--success-color);
+        }
+
+        /* Similar Cars */
+        .similar-section {
+            padding: 3rem 0;
+            background: var(--white);
+            margin-top: 3rem;
+        }
+
+        .similar-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .similar-card {
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .similar-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .similar-image {
+            height: 180px;
+        }
+
+        .similar-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .similar-content {
+            padding: 1rem;
+        }
+
+        .similar-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .similar-price {
+            color: var(--success-color);
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            color: black;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            color: black;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-brand p {
+            line-height: 1.8;
+            color: black;
+        }
+
+        .footer-links h4 {
+            color: black;
+            font-size: 1.125rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: black;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: blue;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid black;
+            padding-top: 2rem;
+            text-align: center;
+            color: black;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-600);
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .car-detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery {
+                position: relative;
+                top: 0;
+            }
+
+            .main-image {
+                height: 400px;
+            }
+
+            .similar-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-nav {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .main-image {
+                height: 300px;
+            }
+
+            .thumbnail-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .thumbnail {
+                height: 70px;
+            }
+
+            .specs-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .similar-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .price-row {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .current-price {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container navbar-container">
+            <a href="index.html" class="navbar-brand">
+                <img src="/img/logoname.png" width="200px" alt="">
+            </a>
+
+            <ul class="navbar-nav">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="buy-cars.html" class="nav-link active">Buy Cars</a></li>
+                <li><a href="luxury-rides.html" class="nav-link">Luxury Rides</a></li>
+                <li><a href="auction.html" class="nav-link">Auctions</a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <a href="checkout.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+                <div class="auth-section" style="display: flex; gap: 0.5rem; align-items: center;">
+                    <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+                    <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+                </div>
+                <button class="mobile-menu-btn" onclick="alert('Mobile menu requires JavaScript')">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <section class="breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-content">
+                <a href="index.html">Home</a>
+                <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+                <a href="buy-cars.html">Buy Cars</a>
+                <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+                <span>Telsa</span>
+                <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+                <span style="color: var(--gray-800); font-weight: 500;">2023 Tesla Model S Plaid</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Car Detail -->
+    <section class="car-detail">
+        <div class="container">
+            <div class="car-detail-grid">
+                <!-- Image Gallery -->
+                <div class="gallery">
+                    <div class="main-image">
+                        <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=800&auto=format&fit=crop"
+                            alt="2022 BMW M4 Competition">
+                    </div>
+                    <div class="thumbnail-grid">
+                        <div class="thumbnail active">
+                            <img src="https://images.unsplash.com/photo-1580274455191-1c62238fa333?w=400&auto=format&fit=crop"
+                                alt="Front view">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&auto=format&fit=crop"
+                                alt="Side view">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://images.unsplash.com/photo-1617531653520-4893f7bbf978?w=400&auto=format&fit=crop"
+                                alt="Interior">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?w=400&auto=format&fit=crop"
+                                alt="Rear view">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Car Info -->
+                <div class="car-info">
+                    <div class="car-header">
+                        <span class="car-badge">
+                            <i class="fas fa-tag"></i> For Sale
+                        </span>
+                        <h1 class="car-title">2023 Tesla Model S Plaid</h1>
+                        <p class="car-subtitle">Coupe • Gasoline • Automatic</p>
+                    </div>
+
+                    <!-- Pricing -->
+                    <div class="pricing-box">
+                        <div class="price-row">
+                            <span class="current-price">$72,500</span>
+                            <span class="original-price">$78,900</span>
+                        </div>
+                        <span class="savings">
+                            <i class="fas fa-arrow-down"></i> Save $6,400
+                        </span>
+                        <p class="price-note">
+                            <i class="fas fa-info-circle"></i> Price includes all fees. No hidden charges.
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <a href="checkout.html?add=2" class="btn btn-success btn-lg">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </a>
+                        <a href="#" class="btn btn-outline btn-lg">
+                            <i class="fas fa-heart"></i> Add to Favorites
+                        </a>
+                    </div>
+                    <p class="secure-note">
+                        <i class="fas fa-shield-alt"></i> Secure transaction • 7-day return policy
+                    </p>
+
+                    <!-- Dealer Info -->
+                    <div class="dealer-info">
+                        <div class="dealer-header">
+                            <div class="dealer-avatar">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div>
+                                <div class="dealer-name">Premium Auto Dealership</div>
+                                <div class="dealer-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span style="color: var(--gray-600); margin-left: 0.5rem;">(4.8) • 127 sales</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dealer-actions">
+                            <a href="#" class="btn btn-outline btn-sm">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                            <a href="#" class="btn btn-outline btn-sm">
+                                <i class="fas fa-envelope"></i> Message
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Specs -->
+                    <div class="specs-grid" style="margin-top: 1.5rem;">
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <div class="spec-content">
+                                <div class="spec-label">Year</div>
+                                <div class="spec-value">2022</div>
+                            </div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="spec-content">
+                                <div class="spec-label">Mileage</div>
+                                <div class="spec-value">8,200 mi</div>
+                            </div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <i class="fas fa-gas-pump"></i>
+                            </div>
+                            <div class="spec-content">
+                                <div class="spec-label">Fuel Type</div>
+                                <div class="spec-value">Gasoline</div>
+                            </div>
+                        </div>
+                        <div class="spec-item">
+                            <div class="spec-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="spec-content">
+                                <div class="spec-label">Transmission</div>
+                                <div class="spec-value">Automatic</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Specs -->
+            <div class="specs-section">
+                <h2 class="section-title">Technical Specifications</h2>
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-engine"></i>
+                        </div>
+                        <div class="spec-content">
+                            <div class="spec-label">Engine</div>
+                            <div class="spec-value">3.0L Twin-Turbo I6</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="spec-content">
+                            <div class="spec-label">Power</div>
+                            <div class="spec-value">503 hp @ 6,250 rpm</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <div class="spec-content">
+                            <div class="spec-label">0-60 mph</div>
+                            <div class="spec-value">3.8 seconds</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <div class="spec-content">
+                            <div class="spec-label">Top Speed</div>
+                            <div class="spec-value">180 mph</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="spec-content">
+                            <div class="spec-label">Exterior Color</div>
+                            <div class="spec-value">Isle of Man Green</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-chair"></i>
+                        </div>
+                        <div class="spec-content">
+                            <div class="spec-label">Interior</div>
+                            <div class="spec-value">Black Merino Leather</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-car-side"></i>
+                        </div>
+                        <div class="spec-content">
+                            <div class="spec-label">Body Type</div>
+                            <div class="spec-value">2-Door Coupe</div>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="spec-content">
+                            <div class="spec-label">Seating</div>
+                            <div class="spec-value">4 Passengers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="description-section">
+                <h2 class="section-title">Description</h2>
+                <div class="description-text">
+                    <p>
+                        Experience the ultimate driving machine with this stunning 2022 BMW M4 Competition.
+                        Finished in the exclusive Isle of Man Green metallic paint with a luxurious Black
+                        Merino Leather interior, this M4 represents the pinnacle of BMW's engineering excellence.
+                    </p>
+                    <p>
+                        The S58 3.0-liter twin-turbo inline-six engine delivers an exhilarating 503 horsepower
+                        and 479 lb-ft of torque, propelling you from 0-60 mph in just 3.8 seconds. The
+                        8-speed M Steptronic automatic transmission provides lightning-fast shifts, while
+                        the M xDrive all-wheel-drive system ensures optimal traction in all conditions.
+                    </p>
+                    <p>
+                        This meticulously maintained vehicle has only 8,200 miles and comes with the
+                        remainder of the factory warranty. The Competition package adds enhanced performance
+                        features including upgraded brakes, adaptive M suspension, and an active M differential.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="features-section">
+                <h2 class="section-title">Key Features</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Head-Up Display</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Harman Kardon Sound</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Wireless CarPlay</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Heated Seats</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Adaptive Cruise</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Lane Keep Assist</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>360° Camera</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Panoramic Roof</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Carbon Fiber Trim</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>M Sport Exhaust</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Similar Cars Carousel -->
+    <section class="similar-section">
+        <div class="container">
+            <div class="similar-header">
+                <h2 class="section-title">Similar Vehicles</h2>
+                <a href="buy-cars.html" class="btn btn-outline btn-sm">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+
+            <div class="carousel-wrapper">
+                <!-- Left Arrow -->
+                <button class="carousel-arrow carousel-arrow-left" onclick="scrollCarousel(-1)">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="carousel-container" id="carouselContainer">
+                    <div class="carousel-track">
+                        <!-- Car 4 -->
+                        <div class="carousel-slide">
+                            <div class="similar-card">
+                                <div class="similar-badge">Save $6,100</div>
+                                <div class="similar-image">
+                                    <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&auto=format&fit=crop"
+                                        alt="Tesla Model S">
+                                </div>
+                                <div class="similar-content">
+                                    <div class="similar-title">2023 Tesla Model S Plaid</div>
+                                    <div class="similar-meta">
+                                        <span><i class="fas fa-calendar"></i> 2023</span>
+                                        <span><i class="fas fa-tachometer-alt"></i> 2,400 mi</span>
+                                    </div>
+                                    <div class="similar-price-row">
+                                        <span class="similar-price">$89,900</span>
+                                        <span class="similar-original">$96,000</span>
+                                    </div>
+                                    <div class="similar-actions">
+                                        <a href="car-details.html?id=6" class="btn btn-primary btn-sm">View Details</a>
+                                        <a href="checkout.html?add=6" class="btn btn-success btn-sm"><i
+                                                class="fas fa-cart-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Car 4 -->
+                        <div class="carousel-slide">
+                            <div class="similar-card">
+                                <div class="similar-badge">Save $6,100</div>
+                                <div class="similar-image">
+                                    <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&auto=format&fit=crop"
+                                        alt="Tesla Model S">
+                                </div>
+                                <div class="similar-content">
+                                    <div class="similar-title">2023 Tesla Model S Plaid</div>
+                                    <div class="similar-meta">
+                                        <span><i class="fas fa-calendar"></i> 2023</span>
+                                        <span><i class="fas fa-tachometer-alt"></i> 2,400 mi</span>
+                                    </div>
+                                    <div class="similar-price-row">
+                                        <span class="similar-price">$89,900</span>
+                                        <span class="similar-original">$96,000</span>
+                                    </div>
+                                    <div class="similar-actions">
+                                        <a href="car-details.html?id=6" class="btn btn-primary btn-sm">View Details</a>
+                                        <a href="checkout.html?add=6" class="btn btn-success btn-sm"><i
+                                                class="fas fa-cart-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <!-- Car 4 -->
+                        <div class="carousel-slide">
+                            <div class="similar-card">
+                                <div class="similar-badge">Save $6,100</div>
+                                <div class="similar-image">
+                                    <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&auto=format&fit=crop"
+                                        alt="Tesla Model S">
+                                </div>
+                                <div class="similar-content">
+                                    <div class="similar-title">2023 Tesla Model S Plaid</div>
+                                    <div class="similar-meta">
+                                        <span><i class="fas fa-calendar"></i> 2023</span>
+                                        <span><i class="fas fa-tachometer-alt"></i> 2,400 mi</span>
+                                    </div>
+                                    <div class="similar-price-row">
+                                        <span class="similar-price">$89,900</span>
+                                        <span class="similar-original">$96,000</span>
+                                    </div>
+                                    <div class="similar-actions">
+                                        <a href="car-details.html?id=6" class="btn btn-primary btn-sm">View Details</a>
+                                        <a href="checkout.html?add=6" class="btn btn-success btn-sm"><i
+                                                class="fas fa-cart-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Car 4 -->
+                        <div class="carousel-slide">
+                            <div class="similar-card">
+                                <div class="similar-badge">Save $6,100</div>
+                                <div class="similar-image">
+                                    <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&auto=format&fit=crop"
+                                        alt="Tesla Model S">
+                                </div>
+                                <div class="similar-content">
+                                    <div class="similar-title">2023 Tesla Model S Plaid</div>
+                                    <div class="similar-meta">
+                                        <span><i class="fas fa-calendar"></i> 2023</span>
+                                        <span><i class="fas fa-tachometer-alt"></i> 2,400 mi</span>
+                                    </div>
+                                    <div class="similar-price-row">
+                                        <span class="similar-price">$89,900</span>
+                                        <span class="similar-original">$96,000</span>
+                                    </div>
+                                    <div class="similar-actions">
+                                        <a href="car-details.html?id=6" class="btn btn-primary btn-sm">View Details</a>
+                                        <a href="checkout.html?add=6" class="btn btn-success btn-sm"><i
+                                                class="fas fa-cart-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Car 4 -->
+                        <div class="carousel-slide">
+                            <div class="similar-card">
+                                <div class="similar-badge">Save $6,100</div>
+                                <div class="similar-image">
+                                    <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&auto=format&fit=crop"
+                                        alt="Tesla Model S">
+                                </div>
+                                <div class="similar-content">
+                                    <div class="similar-title">2023 Tesla Model S Plaid</div>
+                                    <div class="similar-meta">
+                                        <span><i class="fas fa-calendar"></i> 2023</span>
+                                        <span><i class="fas fa-tachometer-alt"></i> 2,400 mi</span>
+                                    </div>
+                                    <div class="similar-price-row">
+                                        <span class="similar-price">$89,900</span>
+                                        <span class="similar-original">$96,000</span>
+                                    </div>
+                                    <div class="similar-actions">
+                                        <a href="car-details.html?id=6" class="btn btn-primary btn-sm">View Details</a>
+                                        <a href="checkout.html?add=6" class="btn btn-success btn-sm"><i
+                                                class="fas fa-cart-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- Right Arrow -->
+                <button class="carousel-arrow carousel-arrow-right" onclick="scrollCarousel(1)">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Carousel Navigation Dots -->
+            <div class="carousel-nav">
+                <span class="carousel-dot active"></span>
+                <span class="carousel-dot"></span>
+                <span class="carousel-dot"></span>
+                <span class="carousel-dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- JavaScript for Carousel -->
+    <script>
+        function scrollCarousel(direction) {
+            const container = document.getElementById('carouselContainer');
+            const slideWidth = 350 + 24; // card width + gap
+            container.scrollBy({
+                left: direction * slideWidth,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="/img/logoname.png" width="300px" alt="">
+                    <p>Your trusted destination for premium vehicles.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="buy-cars.html">Buy Cars</a></li>
+                        <li><a href="auction.html">Auctions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Coscharis. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

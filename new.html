@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auctions - Coscharis</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS Variables */
+    :root {
+      --primary-color: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary-color: #f59e0b;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --warning-color: #f59e0b;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --radius: 0.5rem;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--gray-800);
+      background-color: var(--gray-50);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Navigation */
+    .navbar {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .navbar-nav {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      color: var(--gray-600);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--primary-color);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary-color);
+    }
+
+    .navbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cart-icon {
+      position: relative;
+      color: var(--gray-600);
+      font-size: 1.25rem;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .cart-icon:hover {
+      color: var(--primary-color);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--danger-color);
+      color: white;
+      font-size: 0.75rem;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: 0.875rem;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      background: var(--secondary-color);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #d97706;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--gray-300);
+      color: var(--gray-700);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .btn-sm {
+      padding: 0.375rem 0.875rem;
+      font-size: 0.875rem;
+    }
+
+    .btn-lg {
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--gray-700);
+      font-size: 0.875rem;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      border: 2px solid var(--gray-200);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      background: white;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, var(--secondary-color) 0%, #d97706 100%);
+      color: white;
+      padding: 3rem 0;
+    }
+
+    .page-header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .page-title h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-title p {
+      opacity: 0.9;
+      font-size: 1.125rem;
+    }
+
+    .auction-stats {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .auction-stat {
+      text-align: center;
+    }
+
+    .auction-stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .auction-stat-label {
+      font-size: 0.875rem;
+      opacity: 0.9;
+    }
+
+    /* Filters Section */
+    .filters-section {
+      padding: 1.5rem 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .filters-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      align-items: end;
+    }
+
+    .filters-row .form-group {
+      margin-bottom: 0;
+    }
+
+    .filter-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    /* Car Grid */
+    .section {
+      padding: 2rem 0;
+    }
+
+    .car-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 2rem;
+    }
+
+    .car-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      border: 2px solid transparent;
+    }
+
+    .car-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--secondary-color);
+    }
+
+    .car-image {
+      position: relative;
+      height: 240px;
+      overflow: hidden;
+    }
+
+    .car-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .car-card:hover .car-image img {
+      transform: scale(1.05);
+    }
+
+    .car-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--secondary-color);
+      color: white;
+    }
+
+    .car-favorite {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-400);
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+    }
+
+    .car-favorite:hover {
+      color: var(--danger-color);
+      transform: scale(1.1);
+    }
+
+    .car-content {
+      padding: 1.5rem;
+    }
+
+    .car-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--gray-900);
+    }
+
+    .car-meta {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+
+    .car-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .car-price {
+      margin-bottom: 0.75rem;
+    }
+
+    .car-price-label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .car-price-current {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+
+    .car-bids {
+      font-size: 0.875rem;
+      color: var(--gray-500);
+      margin-bottom: 0.75rem;
+    }
+
+    .car-time {
+      background: rgba(245, 158, 11, 0.1);
+      color: var(--secondary-color);
+      font-size: 0.875rem;
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+
+    .car-time.ending-soon {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger-color);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .car-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .car-actions .btn {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* Horizontal Card Styles - Card 4 Featured */
+    .car-card-horizontal {
+      grid-column: span 2;
+      display: flex;
+      flex-direction: row;
+      min-height: 280px;
+    }
+
+    .car-card-horizontal .car-image {
+      flex: 1.2;
+      height: auto;
+      min-height: 280px;
+    }
+
+    .car-card-horizontal .car-image img {
+      height: 100%;
+    }
+
+    .car-card-horizontal .car-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .car-card-horizontal .car-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .car-card-horizontal .car-meta {
+      margin-bottom: 1.25rem;
+      font-size: 1rem;
+    }
+
+    .car-card-horizontal .car-price-current {
+      font-size: 2rem;
+    }
+
+    .car-card-horizontal .car-bids {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    .car-card-horizontal .car-time {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      font-size: 1rem;
+    }
+
+    .car-card-horizontal .car-actions {
+      gap: 1rem;
+    }
+
+    .car-card-horizontal .car-actions .btn {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+
+    /* Responsive adjustments for horizontal card */
+    @media (max-width: 1024px) {
+      .car-card-horizontal {
+        grid-column: span 1;
+        flex-direction: column;
+        min-height: auto;
+      }
+      
+      .car-card-horizontal .car-image {
+        flex: none;
+        height: 240px;
+        min-height: auto;
+      }
+      
+      .car-card-horizontal .car-content {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .car-card-horizontal {
+        grid-column: span 1;
+      }
+    }
+
+    /* Live Indicator */
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success-color);
+      padding: 0.25rem 0.75rem;
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 0.75rem;
+    }
+
+    .live-indicator::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--success-color);
+      border-radius: 50%;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Empty State */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--gray-900);
+    }
+
+    .empty-state p {
+      color: var(--gray-600);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 3rem;
+    }
+
+    .page-btn {
+      padding: 0.625rem 1rem;
+      border: 2px solid var(--gray-200);
+      background: white;
+      border-radius: var(--radius);
+      color: var(--gray-600);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+    }
+
+    .page-btn:hover {
+      border-color: var(--secondary-color);
+      color: var(--secondary-color);
+    }
+
+    .page-btn.active {
+      background: var(--secondary-color);
+      border-color: var(--secondary-color);
+      color: white;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--gray-900);
+      color: var(--gray-300);
+      padding: 4rem 0 2rem;
+      margin-top: 4rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand h3 {
+      color: white;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-brand p {
+      line-height: 1.8;
+      color: var(--gray-400);
+    }
+
+    .footer-links h4 {
+      color: white;
+      font-size: 1.125rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--gray-800);
+      padding-top: 2rem;
+      text-align: center;
+      color: var(--gray-500);
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--gray-600);
+      cursor: pointer;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .car-grid {
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar-nav {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .auth-section {
+        display: none;
+      }
+
+      .page-header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .auction-stats {
+        justify-content: center;
+      }
+
+      .filters-row {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .car-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Utility Classes */
+    .text-center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="navbar-brand">
+        <i class="fas fa-car"></i>
+        <span>Coscharis</span>
+      </a>
+      
+      <ul class="navbar-nav">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="cars.html" class="nav-link">Buy Cars</a></li>
+        <li><a href="luxury-rides.html" class="nav-link">Luxury Rides</a></li>
+        <li><a href="auction.html" class="nav-link active">Auctions</a></li>
+      </ul>
+      
+      <div class="navbar-actions">
+        <a href="checkout.html" class="cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">3</span>
+        </a>
+        <div class="auth-section" style="display: flex; gap: 0.5rem; align-items: center;">
+          <a href="login.html" class="btn btn-outline btn-sm">Sign In</a>
+          <a href="signup.html" class="btn btn-primary btn-sm">Sign Up</a>
+        </div>
+        <button class="mobile-menu-btn" onclick="alert('Mobile menu requires JavaScript')">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="container">
+      <div class="page-header-content">
+        <div class="page-title">
+          <h1>
+            <i class="fas fa-gavel"></i> Live Auctions
+            <span class="live-indicator">LIVE</span>
+          </h1>
+          <p>Bid on exclusive premium vehicles in real-time</p>
+        </div>
+        <div class="auction-stats">
+          <div class="auction-stat">
+            <div class="auction-stat-value">24</div>
+            <div class="auction-stat-label">Active Auctions</div>
+          </div>
+          <div class="auction-stat">
+            <div class="auction-stat-value">$2.4M</div>
+            <div class="auction-stat-label">Total Value</div>
+          </div>
+          <div class="auction-stat">
+            <div class="auction-stat-value">156</div>
+            <div class="auction-stat-label">Bidders Online</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filters Section -->
+  <section class="filters-section">
+    <div class="container">
+      <form action="" method="GET" class="filters-row">
+        <div class="form-group">
+          <label class="form-label">Brand</label>
+          <select name="brand" class="form-select">
+            <option value="">All Brands</option>
+            <option value="BMW">BMW</option>
+            <option value="Mercedes">Mercedes</option>
+            <option value="Audi">Audi</option>
+            <option value="Porsche">Porsche</option>
+            <option value="Tesla">Tesla</option>
+            <option value="Lamborghini">Lamborghini</option>
+            <option value="Ferrari">Ferrari</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Price Range</label>
+          <select name="price" class="form-select">
+            <option value="">Any Price</option>
+            <option value="0-50000">Under $50,000</option>
+            <option value="50000-100000">$50,000 - $100,000</option>
+            <option value="100000-200000">$100,000 - $200,000</option>
+            <option value="200000+">$200,000+</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Year</label>
+          <select name="year" class="form-select">
+            <option value="">Any Year</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Ending Within</label>
+          <select name="ending" class="form-select">
+            <option value="">Any Time</option>
+            <option value="1hour">1 Hour</option>
+            <option value="24hours">24 Hours</option>
+            <option value="3days">3 Days</option>
+            <option value="7days">7 Days</option>
+          </select>
+        </div>
+        
+        <div class="filter-buttons">
+          <button type="submit" class="btn btn-secondary">
+            <i class="fas fa-filter"></i> Filter
+          </button>
+          <a href="auction.html" class="btn btn-outline">
+            <i class="fas fa-undo"></i> Reset
+          </a>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Auction Grid Section -->
+  <section class="section">
+    <div class="container">
+      <div class="car-grid">
+        <!-- Auction 1 -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&auto=format&fit=crop" alt="Mercedes-Benz S-Class">
+            <span class="car-badge"><i class="fas fa-gavel"></i> Auction</span>
+            <a href="#" class="car-favorite" title="Watch this auction">
+              <i class="far fa-heart"></i>
+            </a>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2023 Mercedes-Benz S-Class</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2023</span>
+              <span><i class="fas fa-tachometer-alt"></i> 12,500 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Hybrid</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$85,000</span>
+            </div>
+            <div class="car-bids">
+              <i class="fas fa-users"></i> 12 bids placed
+            </div>
+            <div class="car-time ending-soon">
+              <i class="fas fa-clock"></i> Ends in 2h 34m 12s
+            </div>
+            <div class="car-actions">
+              <a href="autiondetail.html" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=1&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auction 2 -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1544636331-e26879cdcf6e?w=800&auto=format&fit=crop" alt="Porsche 911">
+            <span class="car-badge"><i class="fas fa-gavel"></i> Auction</span>
+            <a href="#" class="car-favorite" title="Watch this auction">
+              <i class="far fa-heart"></i>
+            </a>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2021 Porsche 911 Carrera</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2021</span>
+              <span><i class="fas fa-tachometer-alt"></i> 15,300 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$98,500</span>
+            </div>
+            <div class="car-bids">
+              <i class="fas fa-users"></i> 8 bids placed
+            </div>
+            <div class="car-time ending-soon">
+              <i class="fas fa-clock"></i> Ends in 5h 12m 45s
+            </div>
+            <div class="car-actions">
+              <a href="car-details.html?id=3" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=3&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auction 3 -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1563720360172-67b8f3dce741?w=800&auto=format&fit=crop" alt="Lamborghini Huracan">
+            <span class="car-badge"><i class="fas fa-gavel"></i> Auction</span>
+            <a href="#" class="car-favorite" title="Watch this auction">
+              <i class="far fa-heart"></i>
+            </a>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2020 Lamborghini Huracan EVO</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2020</span>
+              <span><i class="fas fa-tachometer-alt"></i> 6,800 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$215,000</span>
+            </div>
+            <div class="car-bids">
+              <i class="fas fa-users"></i> 23 bids placed
+            </div>
+            <div class="car-time">
+              <i class="fas fa-clock"></i> Ends in 1d 12h 30m
+            </div>
+            <div class="car-actions">
+              <a href="car-details.html?id=5" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=5&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auction 4 - HORIZONTAL LAYOUT -->
+        <div class="car-card car-card-horizontal">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=800&auto=format&fit=crop" alt="Audi R8">
+            <span class="car-badge"><i class="fas fa-gavel"></i> Auction</span>
+            <a href="#" class="car-favorite" title="Watch this auction">
+              <i class="far fa-heart"></i>
+            </a>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2022 Audi R8 V10 Performance</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2022</span>
+              <span><i class="fas fa-tachometer-alt"></i> 9,500 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$142,000</span>
+            </div>
+            <div class="car-bids">
+              <i class="fas fa-users"></i> 15 bids placed
+            </div>
+            <div class="car-time">
+              <i class="fas fa-clock"></i> Ends in 3d 8h 15m
+            </div>
+            <div class="car-actions">
+              <a href="car-details.html?id=8" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=8&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auction 5 -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=800&auto=format&fit=crop" alt="Ferrari 488">
+            <span class="car-badge"><i class="fas fa-gavel"></i> Auction</span>
+            <a href="#" class="car-favorite" title="Watch this auction">
+              <i class="far fa-heart"></i>
+            </a>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2019 Ferrari 488 GTB</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2019</span>
+              <span><i class="fas fa-tachometer-alt"></i> 8,200 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$285,000</span>
+            </div>
+            <div class="car-bids">
+              <i class="fas fa-users"></i> 31 bids placed
+            </div>
+            <div class="car-time ending-soon">
+              <i class="fas fa-clock"></i> Ends in 45m 22s
+            </div>
+            <div class="car-actions">
+              <a href="car-details.html?id=10" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=10&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auction 6 -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&auto=format&fit=crop" alt="BMW M5">
+            <span class="car-badge"><i class="fas fa-gavel"></i> Auction</span>
+            <a href="#" class="car-favorite" title="Watch this auction">
+              <i class="far fa-heart"></i>
+            </a>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2022 BMW M5 Competition</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2022</span>
+              <span><i class="fas fa-tachometer-alt"></i> 11,400 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$95,500</span>
+            </div>
+            <div class="car-bids">
+              <i class="fas fa-users"></i> 9 bids placed
+            </div>
+            <div class="car-time">
+              <i class="fas fa-clock"></i> Ends in 2d 4h 18m
+            </div>
+            <div class="car-actions">
+              <a href="car-details.html?id=11" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=11&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auction 7 -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=800&auto=format&fit=crop" alt="Mercedes AMG GT">
+            <span class="car-badge"><i class="fas fa-gavel"></i> Auction</span>
+            <a href="#" class="car-favorite" title="Watch this auction">
+              <i class="far fa-heart"></i>
+            </a>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2021 Mercedes-AMG GT R</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2021</span>
+              <span><i class="fas fa-tachometer-alt"></i> 7,300 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$165,000</span>
+            </div>
+            <div class="car-bids">
+              <i class="fas fa-users"></i> 18 bids placed
+            </div>
+            <div class="car-time">
+              <i class="fas fa-clock"></i> Ends in 4d 2h 45m
+            </div>
+            <div class="car-actions">
+              <a href="car-details.html?id=12" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=12&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auction 8 -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&auto=format&fit=crop" alt="Tesla Model X">
+            <span class="car-badge"><i class="fas fa-gavel"></i> Auction</span>
+            <a href="#" class="car-favorite" title="Watch this auction">
+              <i class="far fa-heart"></i>
+            </a>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2023 Tesla Model X Plaid</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2023</span>
+              <span><i class="fas fa-tachometer-alt"></i> 4,100 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Electric</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$112,000</span>
+            </div>
+            <div class="car-bids">
+              <i class="fas fa-users"></i> 6 bids placed
+            </div>
+            <div class="car-time">
+              <i class="fas fa-clock"></i> Ends in 5d 12h 30m
+            </div>
+            <div class="car-actions">
+              <a href="car-details.html?id=13" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=13&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Auction 9 -->
+        <div class="car-card">
+          <div class="car-image">
+            <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop" alt="Porsche Panamera">
+            <span class="car-badge"><i class="fas fa-gavel"></i> Auction</span>
+            <a href="#" class="car-favorite" title="Watch this auction">
+              <i class="far fa-heart"></i>
+            </a>
+          </div>
+          <div class="car-content">
+            <h3 class="car-title">2022 Porsche Panamera GTS</h3>
+            <div class="car-meta">
+              <span><i class="fas fa-calendar"></i> 2022</span>
+              <span><i class="fas fa-tachometer-alt"></i> 13,200 mi</span>
+              <span><i class="fas fa-gas-pump"></i> Gasoline</span>
+            </div>
+            <div class="car-price">
+              <span class="car-price-label">Current Bid</span>
+              <span class="car-price-current">$125,500</span>
+            </div>
+            <div class="car-bids">
+              <i class="fas fa-users"></i> 11 bids placed
+            </div>
+            <div class="car-time ending-soon">
+              <i class="fas fa-clock"></i> Ends in 1h 15m 42s
+            </div>
+            <div class="car-actions">
+              <a href="autiondetail.html" class="btn btn-primary btn-sm">View Details</a>
+              <a href="car-details.html?id=14&action=bid" class="btn btn-secondary btn-sm">Place Bid</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pagination -->
+      <div class="pagination">
+        <a href="#" class="page-btn" aria-label="Previous page">
+          <i class="fas fa-chevron-left"></i>
+        </a>
+        <a href="#" class="page-btn active">1</a>
+        <a href="#" class="page-btn">2</a>
+        <a href="#" class="page-btn">3</a>
+        <a href="#" class="page-btn" aria-label="Next page">
+          <i class="fas fa-chevron-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3><i class="fas fa-car"></i> Coscharis</h3>
+          <p>Your trusted destination for premium vehicles.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="cars.html">Buy Cars</a></li>
+            <li><a href="auction.html">Auctions</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Coscharis. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
